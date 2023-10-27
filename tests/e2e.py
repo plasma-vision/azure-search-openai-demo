@@ -74,18 +74,18 @@ def test_chat(page: Page, live_server_url: str):
     expect(page.get_by_role("button", name="Developer settings")).to_be_enabled()
 
     # Ask a question and wait for the message to appear
-    page.get_by_placeholder("Type a new question (e.g. does my plan cover annual eye exams?)").click()
-    page.get_by_placeholder("Type a new question (e.g. does my plan cover annual eye exams?)").fill(
-        "Whats the dental plan?"
+    page.get_by_placeholder("Type a new question (e.g. How does one do a rebuild of a 100 Hp EnduroMAX Pump?)").click()
+    page.get_by_placeholder("Type a new question (e.g. How does one do a rebuild of a 100 Hp EnduroMAX Pump?)").fill(
+        "What is a mixing tube?"
     )
     page.get_by_role("button", name="Ask question button").click()
 
-    expect(page.get_by_text("Whats the dental plan?")).to_be_visible()
+    expect(page.get_by_text("What is a mixing tube?")).to_be_visible()
     expect(page.get_by_text("The capital of France is Paris.")).to_be_visible()
     expect(page.get_by_role("button", name="Clear chat")).to_be_enabled()
 
     # Show the citation document
-    page.get_by_text("1. Benefit_Options-2.pdf").click()
+    page.get_by_text("1. 400459B Rebuilding the High-pressure swivel-3.pdf").click()
     expect(page.get_by_role("tab", name="Citation")).to_be_visible()
     expect(page.get_by_title("Citation")).to_be_visible()
 
@@ -101,7 +101,7 @@ def test_chat(page: Page, live_server_url: str):
 
     # Clear the chat
     page.get_by_role("button", name="Clear chat").click()
-    expect(page.get_by_text("Whats the dental plan?")).not_to_be_visible()
+    expect(page.get_by_text("What is a mixing tube?")).not_to_be_visible()
     expect(page.get_by_text("The capital of France is Paris.")).not_to_be_visible()
     expect(page.get_by_role("button", name="Clear chat")).to_be_disabled()
 
@@ -148,13 +148,13 @@ def test_chat_customization(page: Page, live_server_url: str):
     page.locator("button").filter(has_text="Close").click()
 
     # Ask a question and wait for the message to appear
-    page.get_by_placeholder("Type a new question (e.g. does my plan cover annual eye exams?)").click()
-    page.get_by_placeholder("Type a new question (e.g. does my plan cover annual eye exams?)").fill(
-        "Whats the dental plan?"
+    page.get_by_placeholder("Type a new question (e.g. How does one do a rebuild of a 100 Hp EnduroMAX Pump?)").click()
+    page.get_by_placeholder("Type a new question (e.g. How does one do a rebuild of a 100 Hp EnduroMAX Pump?)").fill(
+        "What is a mixing tube?"
     )
     page.get_by_role("button", name="Ask question button").click()
 
-    expect(page.get_by_text("Whats the dental plan?")).to_be_visible()
+    expect(page.get_by_text("What is a mixing tube?")).to_be_visible()
     expect(page.get_by_text("The capital of France is Paris.")).to_be_visible()
     expect(page.get_by_role("button", name="Clear chat")).to_be_enabled()
 
@@ -179,13 +179,13 @@ def test_chat_nonstreaming(page: Page, live_server_url: str):
     page.locator("button").filter(has_text="Close").click()
 
     # Ask a question and wait for the message to appear
-    page.get_by_placeholder("Type a new question (e.g. does my plan cover annual eye exams?)").click()
-    page.get_by_placeholder("Type a new question (e.g. does my plan cover annual eye exams?)").fill(
-        "Whats the dental plan?"
+    page.get_by_placeholder("Type a new question (e.g. How does one do a rebuild of a 100 Hp EnduroMAX Pump?)").click()
+    page.get_by_placeholder("Type a new question (e.g. How does one do a rebuild of a 100 Hp EnduroMAX Pump?)").fill(
+        "What is a mixing tube?"
     )
     page.get_by_label("Ask question button").click()
 
-    expect(page.get_by_text("Whats the dental plan?")).to_be_visible()
+    expect(page.get_by_text("What is a mixing tube?")).to_be_visible()
     expect(page.get_by_text("The capital of France is Paris.")).to_be_visible()
     expect(page.get_by_role("button", name="Clear chat")).to_be_enabled()
 
@@ -212,13 +212,13 @@ def test_chat_followup_streaming(page: Page, live_server_url: str):
     page.locator("button").filter(has_text="Close").click()
 
     # Ask a question and wait for the message to appear
-    page.get_by_placeholder("Type a new question (e.g. does my plan cover annual eye exams?)").click()
-    page.get_by_placeholder("Type a new question (e.g. does my plan cover annual eye exams?)").fill(
-        "Whats the dental plan?"
+    page.get_by_placeholder("Type a new question (e.g. How does one do a rebuild of a 100 Hp EnduroMAX Pump?)").click()
+    page.get_by_placeholder("Type a new question (e.g. How does one do a rebuild of a 100 Hp EnduroMAX Pump?)").fill(
+        "What is a mixing tube?"
     )
     page.get_by_label("Ask question button").click()
 
-    expect(page.get_by_text("Whats the dental plan?")).to_be_visible()
+    expect(page.get_by_text("What is a mixing tube?")).to_be_visible()
     expect(page.get_by_text("The capital of France is Paris.")).to_be_visible()
 
     # There should be a follow-up question and it should be clickable:
@@ -250,13 +250,13 @@ def test_chat_followup_nonstreaming(page: Page, live_server_url: str):
     page.locator("button").filter(has_text="Close").click()
 
     # Ask a question and wait for the message to appear
-    page.get_by_placeholder("Type a new question (e.g. does my plan cover annual eye exams?)").click()
-    page.get_by_placeholder("Type a new question (e.g. does my plan cover annual eye exams?)").fill(
-        "Whats the dental plan?"
+    page.get_by_placeholder("Type a new question (e.g. How does one do a rebuild of a 100 Hp EnduroMAX Pump?)").click()
+    page.get_by_placeholder("Type a new question (e.g. How does one do a rebuild of a 100 Hp EnduroMAX Pump?)").fill(
+        "What is a mixing tube?"
     )
     page.get_by_label("Ask question button").click()
 
-    expect(page.get_by_text("Whats the dental plan?")).to_be_visible()
+    expect(page.get_by_text("What is a mixing tube?")).to_be_visible()
     expect(page.get_by_text("The capital of France is Paris.")).to_be_visible()
 
     # There should be a follow-up question and it should be clickable:
@@ -284,10 +284,10 @@ def test_ask(page: Page, live_server_url: str):
     expect(page).to_have_title("GPT + Enterprise data | Sample")
 
     page.get_by_role("link", name="Ask a question").click()
-    page.get_by_placeholder("Example: Does my plan cover annual eye exams?").click()
-    page.get_by_placeholder("Example: Does my plan cover annual eye exams?").fill("Whats the dental plan?")
-    page.get_by_placeholder("Example: Does my plan cover annual eye exams?").click()
+    page.get_by_placeholder("Example: How does one do a rebuild of a 100 Hp EnduroMAX Pump?").click()
+    page.get_by_placeholder("Example: How does one do a rebuild of a 100 Hp EnduroMAX Pump?").fill("What is a mixing tube?")
+    page.get_by_placeholder("Example: How does one do a rebuild of a 100 Hp EnduroMAX Pump?").click()
     page.get_by_label("Ask question button").click()
 
-    expect(page.get_by_text("Whats the dental plan?")).to_be_visible()
+    expect(page.get_by_text("What is a mixing tube?")).to_be_visible()
     expect(page.get_by_text("The capital of France is Paris.")).to_be_visible()

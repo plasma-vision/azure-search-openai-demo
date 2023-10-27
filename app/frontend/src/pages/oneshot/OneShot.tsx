@@ -149,7 +149,7 @@ export function Component(): JSX.Element {
                 <h1 className={styles.oneshotTitle}>Ask your data</h1>
                 <div className={styles.oneshotQuestionInput}>
                     <QuestionInput
-                        placeholder="Example: Does my plan cover annual eye exams?"
+                        placeholder="Example: How does one do a rebuild of a 100 Hp EnduroMAX Pump?"
                         disabled={isLoading}
                         onSend={question => makeApiRequest(question)}
                     />
