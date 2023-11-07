@@ -81,6 +81,7 @@ If you cannot generate a search query, return just the number 0.
         self.content_field = content_field
         self.query_language = query_language
         self.query_speller = query_speller
+        print(chatgpt_model)
         self.chatgpt_token_limit = get_token_limit(chatgpt_model)
 
     async def run_until_final_call(
