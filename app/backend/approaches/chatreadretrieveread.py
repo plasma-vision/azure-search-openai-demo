@@ -6,7 +6,7 @@ from typing import Any, AsyncGenerator, Optional, Union
 import aiohttp
 import openai
 from azure.search.documents.aio import SearchClient
-from azure.search.documents.models import QueryType
+from azure.search.documents.models import QueryType, RawVectorQuery, VectorQuery
 
 from approaches.approach import Approach
 from core.messagebuilder import MessageBuilder
@@ -23,9 +23,9 @@ class ChatReadRetrieveReadApproach(Approach):
     NO_RESPONSE = "0"
 
     """
-    Simple retrieve-then-read implementation, using the Cognitive Search and OpenAI APIs directly. It first retrieves
-    top documents from search, then constructs a prompt with them, and then uses OpenAI to generate an completion
-    (answer) with that prompt.
+    A multi-step approach that first uses OpenAI to turn the user's question into a search query,
+    then uses Azure AI Search to retrieve relevant documents, and then sends the conversation history,
+    original user question, and search results to OpenAI to generate a response.
     """
     system_message_chat_conversation = """Assistant helps the waterjet users find answers to their technical questions. Be brief in your answers.
 Answer ONLY with the facts listed in the list of sources below. If there isn't enough information below, say you don't know. Do not generate answers that don't use the sources below. If asking a clarifying question to the user would help, ask the question.
@@ -43,7 +43,7 @@ Do no repeat questions that have already been asked.
 Make sure the last question ends with ">>"."""
 
     query_prompt_template = """Below is a history of the conversation so far, and a new question asked by the user that needs to be answered by searching in a knowledge base about employee healthcare plans and the employee handbook.
-You have access to Azure Cognitive Search index with 100's of documents.
+You have access to an Azure AI Search index with 100's of documents.
 Generate a search query based on the conversation and the new question.
 Do not include cited source filenames and document names e.g info.txt or doc.pdf in the search query terms.
 Do not include any text inside [] or <<>> in the search query terms.
@@ -103,7 +103,7 @@ If you cannot generate a search query, return just the number 0.
         functions = [
             {
                 "name": "search_sources",
-                "description": "Retrieve sources from the Azure Cognitive Search index",
+                "description": "Retrieve sources from the Azure AI Search index",
                 "parameters": {
                     "type": "object",
                     "properties": {
@@ -144,12 +144,12 @@ If you cannot generate a search query, return just the number 0.
         # STEP 2: Retrieve relevant documents from the search index with the GPT optimized query
 
         # If retrieval mode includes vectors, compute an embedding for the query
+        vectors: list[VectorQuery] = []
         if has_vector:
             embedding_args = {"deployment_id": self.embedding_deployment} if self.openai_host == "azure" else {}
             embedding = await openai.Embedding.acreate(**embedding_args, model=self.embedding_model, input=query_text)
             query_vector = embedding["data"][0]["embedding"]
-        else:
-            query_vector = None
+            vectors.append(RawVectorQuery(vector=query_vector, k=50, fields="embedding"))
 
         # Only keep the text query if the retrieval mode uses text, otherwise drop it
         if not has_text:
@@ -166,19 +166,10 @@ If you cannot generate a search query, return just the number 0.
                 semantic_configuration_name="default",
                 top=top,
                 query_caption="extractive|highlight-false" if use_semantic_captions else None,
-                vector=query_vector,
-                top_k=50 if query_vector else None,
-                vector_fields="embedding" if query_vector else None,
+                vector_queries=vectors,
             )
         else:
-            r = await self.search_client.search(
-                query_text,
-                filter=filter,
-                top=top,
-                vector=query_vector,
-                top_k=50 if query_vector else None,
-                vector_fields="embedding" if query_vector else None,
-            )
+            r = await self.search_client.search(query_text, filter=filter, top=top, vector_queries=vectors)
         if use_semantic_captions:
             results = [
                 doc[self.sourcepage_field] + ": " + nonewlines(" . ".join([c.text for c in doc["@search.captions"]]))
