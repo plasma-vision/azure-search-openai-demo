@@ -49,7 +49,7 @@ def live_server_url(mock_env, free_port: int) -> Generator[str, None, None]:
 
 def test_home(page: Page, live_server_url: str):
     page.goto(live_server_url)
-    expect(page).to_have_title("GPT + Enterprise data | Sample")
+    expect(page).to_have_title("OMAX Documentation Chat | Sample")
 
 
 def test_chat(page: Page, live_server_url: str):
@@ -68,7 +68,7 @@ def test_chat(page: Page, live_server_url: str):
 
     # Check initial page state
     page.goto(live_server_url)
-    expect(page).to_have_title("GPT + Enterprise data | Sample")
+    expect(page).to_have_title("OMAX Documentation Chat | Sample")
     expect(page.get_by_role("heading", name="Chat with your data")).to_be_visible()
     expect(page.get_by_role("button", name="Clear chat")).to_be_disabled()
     expect(page.get_by_role("button", name="Developer settings")).to_be_enabled()
@@ -130,7 +130,7 @@ def test_chat_customization(page: Page, live_server_url: str):
 
     # Check initial page state
     page.goto(live_server_url)
-    expect(page).to_have_title("GPT + Enterprise data | Sample")
+    expect(page).to_have_title("OMAX Documentation Chat | Sample")
 
     # Customize all the settings
     page.get_by_role("button", name="Developer settings").click()
@@ -172,7 +172,7 @@ def test_chat_nonstreaming(page: Page, live_server_url: str):
 
     # Check initial page state
     page.goto(live_server_url)
-    expect(page).to_have_title("GPT + Enterprise data | Sample")
+    expect(page).to_have_title("OMAX Documentation Chat | Sample")
     expect(page.get_by_role("button", name="Developer settings")).to_be_enabled()
     page.get_by_role("button", name="Developer settings").click()
     page.get_by_text("Stream chat completion responses").click()
@@ -205,7 +205,7 @@ def test_chat_followup_streaming(page: Page, live_server_url: str):
 
     # Check initial page state
     page.goto(live_server_url)
-    expect(page).to_have_title("GPT + Enterprise data | Sample")
+    expect(page).to_have_title("OMAX Documentation Chat | Sample")
     expect(page.get_by_role("button", name="Developer settings")).to_be_enabled()
     page.get_by_role("button", name="Developer settings").click()
     page.get_by_text("Suggest follow-up questions").click()
@@ -242,7 +242,7 @@ def test_chat_followup_nonstreaming(page: Page, live_server_url: str):
 
     # Check initial page state
     page.goto(live_server_url)
-    expect(page).to_have_title("GPT + Enterprise data | Sample")
+    expect(page).to_have_title("OMAX Documentation Chat | Sample")
     expect(page.get_by_role("button", name="Developer settings")).to_be_enabled()
     page.get_by_role("button", name="Developer settings").click()
     page.get_by_text("Stream chat completion responses").click()
@@ -281,7 +281,7 @@ def test_ask(page: Page, live_server_url: str):
 
     page.route("*/**/ask", handle)
     page.goto(live_server_url)
-    expect(page).to_have_title("GPT + Enterprise data | Sample")
+    expect(page).to_have_title("OMAX Documentation Chat | Sample")
 
     page.get_by_role("link", name="Ask a question").click()
     page.get_by_placeholder("Example: How does one do a rebuild of a 100 Hp EnduroMAX Pump?").click()
@@ -304,7 +304,7 @@ def test_ask_with_error(page: Page, live_server_url: str):
 
     page.route("*/**/ask", handle)
     page.goto(live_server_url)
-    expect(page).to_have_title("GPT + Enterprise data | Sample")
+    expect(page).to_have_title("OMAX Documentation Chat | Sample")
 
     page.get_by_role("link", name="Ask a question").click()
     page.get_by_placeholder("Example: Does my plan cover annual eye exams?").click()
@@ -328,7 +328,7 @@ def test_chat_with_error_nonstreaming(page: Page, live_server_url: str):
 
     # Check initial page state
     page.goto(live_server_url)
-    expect(page).to_have_title("GPT + Enterprise data | Sample")
+    expect(page).to_have_title("OMAX Documentation Chat | Sample")
     expect(page.get_by_role("button", name="Developer settings")).to_be_enabled()
     page.get_by_role("button", name="Developer settings").click()
     page.get_by_text("Stream chat completion responses").click()
@@ -358,7 +358,7 @@ def test_chat_with_error_streaming(page: Page, live_server_url: str):
 
     # Check initial page state
     page.goto(live_server_url)
-    expect(page).to_have_title("GPT + Enterprise data | Sample")
+    expect(page).to_have_title("OMAX Documentation Chat | Sample")
 
     # Ask a question and wait for the message to appear
     page.get_by_placeholder("Type a new question (e.g. does my plan cover annual eye exams?)").click()
