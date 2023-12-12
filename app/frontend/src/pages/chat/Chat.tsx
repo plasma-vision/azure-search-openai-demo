@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { Checkbox, Panel, DefaultButton, TextField, SpinButton, Dropdown, IDropdownOption } from "@fluentui/react";
 import { SparkleFilled, ChatHelpFilled } from "@fluentui/react-icons";
+import Logo from "../../assets/omax-technology.svg";
 import readNDJSONStream from "ndjson-readablestream";
 
 import styles from "./Chat.module.css";
@@ -235,7 +236,8 @@ const Chat = () => {
                 <div className={styles.chatContainer}>
                     {!lastQuestionRef.current ? (
                         <div className={styles.chatEmptyState}>
-                            <ChatHelpFilled fontSize={"120px"} primaryFill={"rgba(214, 39, 46, 1)"} aria-hidden="true" aria-label="Chat logo" />
+                            <Logo aria-hidden="true" aria-label="OMAX Technology logo" />
+                            {/* <ChatHelpFilled fontSize={"120px"} primaryFill={"rgba(214, 39, 46, 1)"} aria-hidden="true" aria-label="Chat logo" /> */}
                             <h1 className={styles.chatEmptyStateTitle}>Chat with your data</h1>
                             <h2 className={styles.chatEmptyStateSubtitle}>Ask anything or try an example</h2>
                             <ExampleList onExampleClicked={onExampleClicked} />
