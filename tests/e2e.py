@@ -38,7 +38,7 @@ def free_port() -> int:
 
 
 @pytest.fixture()
-def live_server_url(mock_env, free_port: int) -> Generator[str, None, None]:
+def live_server_url(mock_env, mock_acs_search, free_port: int) -> Generator[str, None, None]:
     proc = Process(target=lambda: uvicorn.run(app.create_app(), port=free_port), daemon=True)
     proc.start()
     url = f"http://localhost:{free_port}/"
@@ -92,7 +92,7 @@ def test_chat(page: Page, live_server_url: str):
     # Show the thought process
     page.get_by_label("Show thought process").click()
     expect(page.get_by_title("Thought process")).to_be_visible()
-    expect(page.get_by_text("Searched for:")).to_be_visible()
+    expect(page.get_by_text("Generated search query")).to_be_visible()
 
     # Show the supporting content
     page.get_by_label("Show supporting content").click()

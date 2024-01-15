@@ -9,9 +9,11 @@ MODELS_2_TOKEN_LIMITS = {
     "gpt-3.5-turbo-16k": 16000,
     "gpt-4": 8100,
     "gpt-4-32k": 32000,
+    "gpt-4v": 128000,
 }
 
-AOAI_2_OAI = {"gpt-35-turbo": "gpt-3.5-turbo", "gpt-35-turbo-16k": "gpt-3.5-turbo-16k", "gpt-4": "gpt-4", "gpt-4-32k": "gpt-4-32k"}
+
+AOAI_2_OAI = {"gpt-35-turbo": "gpt-3.5-turbo", "gpt-35-turbo-16k": "gpt-3.5-turbo-16k", "gpt-4v": "gpt-4-turbo-vision"}
 
 
 def get_token_limit(model_id: str) -> int:
@@ -36,10 +38,17 @@ def num_tokens_from_messages(message: dict[str, str], model: str) -> int:
         num_tokens_from_messages(message, model)
         output: 11
     """
+
     encoding = tiktoken.encoding_for_model(get_oai_chatmodel_tiktok(model))
     num_tokens = 2  # For "role" and "content" keys
-    for value in message.values():
-        num_tokens += len(encoding.encode(str(value)))
+    for key, value in message.items():
+        if isinstance(value, list):
+            for v in value:
+                # TODO: Update token count for images https://github.com/openai/openai-cookbook/pull/881/files
+                if isinstance(v, str):
+                    num_tokens += len(encoding.encode(v))
+        else:
+            num_tokens += len(encoding.encode(value))
     return num_tokens
 
 
